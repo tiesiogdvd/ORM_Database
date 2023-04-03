@@ -26,7 +26,9 @@ public class GroupsController {
     }
 
     @GetMapping("/new")
-    public String addGroup(){
+    public String addGroup(Model model){
+        model.addAttribute("group",new Group());
+
         return "groups_new";
     }
 
