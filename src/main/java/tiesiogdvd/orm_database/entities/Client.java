@@ -1,8 +1,7 @@
 package tiesiogdvd.orm_database.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
@@ -12,16 +11,22 @@ import java.util.List;
 @Entity
 @Table(name = "client")
 public class Client {
-    private static final int dudu = 5;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer client_id;
 
-    @NotEmpty
-    @Length(min = 3, max = 64)
+    @NotNull
+    @Length(min = 3, max = 20, message = "Vardas maziausiai 3 simboliu")
     private String name;
+    @NotNull
+    @Length(min = 3, max = 25, message = "Pavarde maziausiai 3 simboliu")
     private String surname;
+
+    @NotNull
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", message = "El. pastas netinkamas", flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
+
+    @Length(max = 15)
     private String phone;
 
     @ManyToOne(cascade = CascadeType.REMOVE)

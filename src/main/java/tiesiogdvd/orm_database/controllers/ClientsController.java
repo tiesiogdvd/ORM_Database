@@ -1,12 +1,11 @@
 package tiesiogdvd.orm_database.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import tiesiogdvd.orm_database.entities.Client;
 import tiesiogdvd.orm_database.entities.Group;
 import tiesiogdvd.orm_database.repositories.ClientRepository;
@@ -46,6 +45,7 @@ public class ClientsController {
             Model model,
             @PathVariable("id") Integer id
     ){
+        model.addAttribute("client", new Client());
         model.addAttribute("group", id);
         return "client_new";
     }
@@ -55,44 +55,46 @@ public class ClientsController {
             Model model
     ){
         List<Group> groups = groupRepository.findAll();
+        model.addAttribute("client", new Client());
         model.addAttribute("groups", groups);
         return "client_new";
     }
 
     @PostMapping("/clients/{id}/new")
     public String storeClient(
+            Model model,
             @PathVariable("id") Integer id,
-            @RequestParam("name") String name,
-            @RequestParam("surname") String surname,
-            @RequestParam("email") String email,
-            @RequestParam("phone") String phone
+            @Valid
+            @ModelAttribute
+            Client client,
+            BindingResult result
     ){
-        Group group = groupRepository.getReferenceById(id);
-        Client client = new Client(name, surname, email, phone, group);
+        if(result.hasErrors()){
+            List<Group> groups = groupRepository.findAll();
+            model.addAttribute("groups", groups);
+            return "client_new";
+        }
+
         clientRepository.save(client);
+        model.addAttribute("id", id);
         return "redirect:/clients/"+id;
     }
 
 
     @PostMapping("/clients/new")
     public String storeClient(
-            @RequestParam("name") String name,
-            @RequestParam("surname") String surname,
-            @RequestParam("email") String email,
-            @RequestParam("phone") String phone,
-            @RequestParam(value = "group_id", required = false) Integer groupId
+            Model model,
+            @Valid
+            @ModelAttribute
+            Client client,
+            BindingResult result
     ){
-
-        if(groupId!=null){
-            Group group = groupRepository.getReferenceById(groupId);
-            Client client = new Client(name, surname, email, phone, group);
-            clientRepository.save(client);
-        }else{
-            Client client = new Client(name, surname, email, phone);
-            clientRepository.save(client);
+        if(result.hasErrors()){
+            List<Group> groups = groupRepository.findAll();
+            model.addAttribute("groups", groups);
+            return "client_new";
         }
-
-
+        clientRepository.save(client);
         return "redirect:/clients";
     }
 

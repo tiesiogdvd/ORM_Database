@@ -40,22 +40,32 @@
             <div class="card">
                 <div class="card-header">Klientas</div>
                 <div class="card-body">
-                    <form method="post" th:object="${group}" th:action="${id != null} ? '/clients/' + ${id} + '/new' : '/clients/new'">
+
+
+                    <form method="post" th:object="${client}" th:action="${id != null} ? '/clients/' + ${id} + '/new' : '/clients/new'">
+
+                        <div th:if="${#fields.hasErrors()}">
+                            <ul>
+                                <li th:each="error:${#fields.errors()}" th:text="${error}"></li>
+                            </ul>
+
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Vardas</label>
-                            <input type="text" class="form-control" th:value="*{1}" name="name">
+                            <input type="text" class="form-control" th:value="*{name}" name="name">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Pavardė</label>
-                            <input type="text" class="form-control" name="surname">
+                            <input type="text" class="form-control" th:value="*{surname}" name="surname">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">El.paštas</label>
-                            <input type="text" class="form-control" name="email">
+                            <input type="text" class="form-control" th:value="*{email}" name="email">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Telefonas</label>
-                            <input type="text" class="form-control" name="phone">
+                            <input type="text" class="form-control" th:value="*{phone}" name="phone">
                         </div>
 
                         <div th:if="${id == null}" class="mb-3">
