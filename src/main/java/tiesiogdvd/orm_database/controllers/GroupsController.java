@@ -37,6 +37,7 @@ public class GroupsController {
             @RequestParam("name") String name,
             @RequestParam("year") Integer year
     ){
+        System.out.println("haha");
         Group group = new Group(name,year);
         groupRepository.save(group);
         return "redirect:/";

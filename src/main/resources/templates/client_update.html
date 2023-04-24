@@ -72,6 +72,42 @@
                   </form>
 
                 </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Failai</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="file: ${client.getClientFiles()}">
+                            <td>
+                                <a th:href="'/clients/file/'+${file.getFile_id()}" th:text="${file.filePath}">Ištrinti</a>
+                            </td>
+                            <td style="width: 400px;">
+                                <a th:href="'/clients/deletefile/'+${file.getFile_id()}" class="btn btn-danger">Ištrinti</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                    <form method="post" enctype="multipart/form-data" th:action="${id != null} ? '/clients/'+ ${id} + '/addfile/' + ${client.id} : '/clients/addfile/'+ ${client.id}">
+
+                        <div class="mb-4">
+                            <label class="form-label">Failo ikelimas</label>
+                            <input type="file" class="form-control" name="file">
+                        </div>
+
+                        <button class="btn btn-primary">Prideti faila</button>
+                    </form>
+
+                </div>
+
+
             </div>
         </div>
     </div>

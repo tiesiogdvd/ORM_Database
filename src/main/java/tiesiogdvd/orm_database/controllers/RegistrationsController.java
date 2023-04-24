@@ -17,7 +17,10 @@ import tiesiogdvd.orm_database.repositories.RegistrationRepository;
 import tiesiogdvd.orm_database.repositories.WorkoutRepository;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 @Controller
 public class RegistrationsController {
@@ -39,11 +42,14 @@ public class RegistrationsController {
     }
 
 
+
+
     @GetMapping("/registrations/{id}")
     public String registrationsFromWork(
             Model model,
             @PathVariable("id") Integer id
     ){
+
         Workout workout = workoutRepository.getReferenceById(id);
         List<Registration> registrationList = workout.getRegistrations();
         model.addAttribute("registrations", registrationList);

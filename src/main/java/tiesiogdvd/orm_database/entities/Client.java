@@ -36,6 +36,9 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Registration> registrations;
 
+    @OneToMany(mappedBy = "client")
+    private List<ClientFile> clientFiles;
+
     public Client(String name, String surname, String email, String phone) {
         this.name = name;
         this.surname = surname;
@@ -99,6 +102,14 @@ public class Client {
         this.group = group;
     }
 
+
+    public List<ClientFile> getClientFiles() {
+        return clientFiles;
+    }
+
+    public void setClientFiles(List<ClientFile> clientFiles) {
+        this.clientFiles = clientFiles;
+    }
 
     public List<Registration> getRegistrations() {
         return registrations;
